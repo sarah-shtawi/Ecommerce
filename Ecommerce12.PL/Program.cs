@@ -1,5 +1,7 @@
 
+using Ecommerce12.BLL.Service;
 using Ecommerce12.DAL.Data;
+using Ecommerce12.DAL.Repository;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -19,9 +21,11 @@ namespace Ecommerce12.PL
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            // from data base 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // for Localization 
             builder.Services.AddLocalization(options => options.ResourcesPath = "");
 
             const string defaultCulture = "en";
@@ -42,8 +46,11 @@ namespace Ecommerce12.PL
                     QueryStringKey= "lang"
                 });
             });
-
+            // swagger 
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
             var app = builder.Build();
