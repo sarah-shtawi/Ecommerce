@@ -18,18 +18,31 @@ namespace Ecommerce12.DAL.Repository
         {
             _context = context;
         }
-
-        public Category CreateCategoryRepo(Category Request)
+        public async Task<Category> CreateCategoryRepo(Category Request)
         {
-            _context.categories.Add(Request);
-            _context.SaveChanges();
+           await  _context.categories.AddAsync(Request);
+           await  _context.SaveChangesAsync();
             return Request;
         }
-
-        public List<Category> GetAll()
+        public async Task<List<Category>> GetAll()
         {
-            return _context.categories.Include(c =>c.Translation).ToList();
+            return await  _context.categories.Include(c =>c.Translation).Include(c =>c.User).ToListAsync();
         }
-
+        public async Task<Category?> FindByIdAsync(int id )
+        {
+            var category = await _context.categories.Include(c => c.Translation).FirstOrDefaultAsync(c=> c.Id == id);
+            return category;
+        }
+        public async Task DeleteCategoryAsync(Category category)
+        {
+            _context.categories.Remove(category);
+            _context.SaveChangesAsync();
+        }
+        public async Task<Category?> UpdateCategoryAsync(Category request)
+        {
+            _context.categories.Update(request);
+            await _context.SaveChangesAsync();
+            return request;
+        }
     }
 }

@@ -11,9 +11,15 @@ namespace Ecommerce12.DAL.Repository
     public interface ICategoryRepository
     {
 
-        public List<Category> GetAll();
+        public Task<List<Category>> GetAll();
 
-        public Category CreateCategoryRepo(Category Request);
+        public Task<Category> CreateCategoryRepo(Category Request);
+
+        public Task<Category?> FindByIdAsync(int id);
+
+        public Task DeleteCategoryAsync(Category category);
+
+        public Task<Category?> UpdateCategoryAsync(Category request);
 
     }
 }
