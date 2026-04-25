@@ -4,6 +4,7 @@ using Ecommerce12.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ecommerce12.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260212195907_Sub Images")]
+    partial class SubImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,12 +80,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -107,24 +104,6 @@ namespace Ecommerce12.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Cart", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("carts");
                 });
 
             modelBuilder.Entity("Ecommerce12.DAL.Models.Category", b =>
@@ -182,73 +161,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("categoriesTranslation");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal?>("AmountPaid")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ShippedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("orderStatusEnum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("paymentMethodEnum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("paymentStatus")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("orders");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.OrderItems", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ProductId", "OrderId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("Ecommerce12.DAL.Models.Product", b =>
@@ -353,40 +265,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("productTranslations");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -522,25 +400,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Cart", b =>
-                {
-                    b.HasOne("Ecommerce12.DAL.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce12.DAL.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Ecommerce12.DAL.Models.Category", b =>
                 {
                     b.HasOne("Ecommerce12.DAL.Models.ApplicationUser", "User")
@@ -563,36 +422,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.Navigation("category");
                 });
 
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Order", b =>
-                {
-                    b.HasOne("Ecommerce12.DAL.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.OrderItems", b =>
-                {
-                    b.HasOne("Ecommerce12.DAL.Models.Order", "Order")
-                        .WithMany("orderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce12.DAL.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Ecommerce12.DAL.Models.Product", b =>
                 {
                     b.HasOne("Ecommerce12.DAL.Models.Category", "category")
@@ -604,7 +433,7 @@ namespace Ecommerce12.DAL.Migrations
                     b.HasOne("Ecommerce12.DAL.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -632,25 +461,6 @@ namespace Ecommerce12.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("product");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Review", b =>
-                {
-                    b.HasOne("Ecommerce12.DAL.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ecommerce12.DAL.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -709,11 +519,6 @@ namespace Ecommerce12.DAL.Migrations
                     b.Navigation("Translation");
 
                     b.Navigation("products");
-                });
-
-            modelBuilder.Entity("Ecommerce12.DAL.Models.Order", b =>
-                {
-                    b.Navigation("orderItems");
                 });
 
             modelBuilder.Entity("Ecommerce12.DAL.Models.Product", b =>
